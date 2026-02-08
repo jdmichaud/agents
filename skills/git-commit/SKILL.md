@@ -23,11 +23,23 @@ split into smaller one.
 
 # When to commit
 
-Committing to a project should be done only when the test associated with the
-changes are passing and when all the project specific rules for a commit are
-satisfied (code linting, formatting, etc). Prefer let the user review the
-changes before committing. If no comments were made before moving on to the next
-request, assume that the user is OK with the change to be committed.
+Committing to a project should be done only when ALL of the following are true:
+
+1. **The task is fully complete.** Do not commit intermediate progress. A task
+   is not done until the user is satisfied with the result. If the user provides
+   corrections, refinements, or follow-up instructions on the same topic, it is
+   still the same task — not a new one. Only commit once the task has converged
+   to a final state.
+
+2. **Tests pass and project rules are satisfied.** All tests associated with
+   the changes must pass. All project-specific rules (code linting, formatting,
+   etc.) must be satisfied.
+
+3. **The user has reviewed the changes.** Always let the user review before
+   committing. Wait for explicit approval or for the user to move on to an
+   **unrelated** task. A follow-up message that refines, corrects, or continues
+   the current work is NOT a new task and does NOT constitute implicit approval
+   to commit the previous state.
 
 # Commit message.
 
