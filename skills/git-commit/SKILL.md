@@ -1,61 +1,96 @@
 ---
-name: Git commit
-description: Set of rules to follow when committing changes in a git based
-project.
+name: git-commit
+description: 'Use this skill when the user wants you to commit changes. Do not
+use it to push, open a pull request, rebase, or change the commit history.'
 ---
-
-# Git commit
-
-This skills will help you produce well organized and helpfull git commit.
-
-# When to use the skill
-
-Use this skill whenever committing changes to any git based project.
 
 # Content of a commit
 
-A commit should contain a coherent set of code modifications (change). It should
-be possible to sum up the commit in a few sentences. Commit message should not
-reference immediate commit changes otherwise, it means that those commit could
-be merged into one. Conversely, you should not have to resume a commit with
-multiple paragraph of too long a text. It probably means that the commit can be
-split into smaller one.
+A commit should contain a coherent set of code modifications (change). This
+could include a bug fix, a new feature, a refactor, etc. It should be possible
+to sum up the commit in a few sentences.
 
-# When to commit
+Test update or addition will usually go with the associated code change. There
+might be exception to this rule when a test is refactored on its own or tests
 
-Committing to a project should be done only when ALL of the following are true:
+The purpose of organising commits this way is to facilite:
+- review: commits as a coherent set of changes make them easier to review and
+  grasp the original intention.
+- test investigation: bisecting commit will be quicker.
+- revert: the coherency of the commit will facilitate a revert.
 
-1. **The task is fully complete.** Do not commit intermediate progress. A task
-   is not done until the user is satisfied with the result. If the user provides
-   corrections, refinements, or follow-up instructions on the same topic, it is
-   still the same task — not a new one. Only commit once the task has converged
-   to a final state.
+As long as commits are not pushed, they can be reworked. So do not hesitate to
+reorganize unpushed commits to satisfy the rules above. Once pushed, a commit
+cannot be change without an explicit approval from the user.
 
-2. **Tests pass and project rules are satisfied.** All tests associated with
-   the changes must pass. All project-specific rules (code linting, formatting,
-   etc.) must be satisfied.
+# Git Commit with Conventional Commits
 
-3. **The user has reviewed the changes.** Always let the user review before
-   committing. Wait for explicit approval or for the user to move on to an
-   **unrelated** task. A follow-up message that refines, corrects, or continues
-   the current work is NOT a new task and does NOT constitute implicit approval
-   to commit the previous state.
+Make Git commits that follow the Conventional Commits 1.0.0 specification. Get
+the type, the scope, and the summary from the diff.
 
-# Commit message.
+## Message Format
 
-Follow the common good practices for commit messages.
+```text
+<type>(<scope>): <summary>
 
-Make sure to document design trade-offs or remaining tasks associated with the
-change in the commit message if applicable.
+<body>
 
-# Rules to follow
+<footer>
+```
 
-- Never push. Let the use handle pushing or retrieving changes from a git
-  remote.
+- The scope, the body, and the footer are optional. Without a scope, write
+  `<type>: <summary>`.
+- Write the summary in the imperative mood: "add", not "added" or "adds".
+- Keep the first line at 72 characters or less. Do not put a period at the end.
+- In the body, tell what changed and why.
+- Write each footer as `Token: value` or `Token #value`, for example
+  `Refs: #456` or `Closes #123`. Conventional Commits accepts the two forms,
+  but Git reads only `Token: value` as a trailer. In a token, use `-` in place
+  of a space.
 
-- Never rewrite history on already pushed changes unless explicitely asked.
-  Amending local commit is acceptable.
+## Types
 
-- If the project contains a README.md, AGENTS.md or a DESIGN.md, make sure that
-  the files are still up to date following the change you are about to commit.
-  If not, update them and include them in the commit.
+Conventional Commits defines only `feat` and `fix`. The other types come from
+the Angular convention. If the repository has its own list, use that list.
+
+| Type       | Use it for                                     |
+| ---------- | ---------------------------------------------- |
+| `feat`     | A new feature                                  |
+| `fix`      | A bug fix                                      |
+| `docs`     | Documentation only                             |
+| `style`    | Formatting only, with no change to the logic   |
+| `refactor` | A code change that is not a feature or a fix   |
+| `perf`     | A performance improvement                      |
+| `test`     | New or changed tests                           |
+| `build`    | The build system or the dependencies           |
+| `ci`       | The CI configuration                           |
+| `chore`    | Other maintenance                              |
+| `revert`   | A revert of an earlier commit                  |
+
+## Breaking Changes
+
+Put `!` before the colon, or add a `BREAKING CHANGE:` footer. Write the token in
+uppercase. `BREAKING-CHANGE:` is also correct.
+
+```text
+feat(api)!: remove the v1 endpoints
+
+BREAKING CHANGE: Clients must use the v2 endpoints.
+```
+
+## Safety Rules
+
+- This commit skill can be overriden by specific commit rules in AGENTS.MD,
+  CLAUDE.md, CONTRIBUTING.md or any other project documentation.
+- Do not change the Git configuration.
+- All tests related to the change and all project-specific rules (code
+  linting, formatting, etc.) must be satisfied
+- Do not use `--no-verify` unless the user tells you to. Hooks can be in
+  `.git/hooks` or in the Git configuration.
+- If a hook fails, Git does not make the commit. Fix the problem, stage the
+  files again, and run the same `git commit` command again. Do not use
+  `--amend`, because it changes the previous commit.
+- Do not change the commit history unless the user tells you to. Do not use
+  `git reset --hard`, `git rebase`, or the experimental `git history` command.
+- Do not push unless the user tells you to. Do not force push to the default
+  branch.
