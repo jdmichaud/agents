@@ -1,7 +1,7 @@
 ---
 name: git-commit
-description: 'Use this skill when the user wants you to commit changes. Do not
-use it to push, open a pull request, rebase, or change the commit history.'
+description: 'Use before every git commit: what goes in a commit and its
+Conventional Commits message'
 ---
 
 # Content of a commit
