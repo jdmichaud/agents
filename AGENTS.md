@@ -19,6 +19,7 @@ replies, be brief and clear:
 - Avoid a compressed declarative language. Talk more naturally like a human
   would. Choose the phrasing that a thoughtful, articulate person would
   naturally use.
+- Avoid the possessive form which can sometimes hard to understand.
 
 ## Long-haul tasks
 
