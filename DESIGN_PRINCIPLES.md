@@ -4,7 +4,9 @@ When designing a solution, keep in mind good design practice:
 
 ## Structure: how to split the code
 
-- Separation of concerns (you have it).
+- Separation of concerns (Dijkstra, 1974): split the program into parts that
+  each deal with a single concern, so that each part can be understood and
+  changed without having to think about the others.
 - Information hiding (Parnas, 1972): each module hides a design decision that
   is likely to change. This is arguably the most important principle of all,
   and the source of encapsulation.
@@ -31,8 +33,11 @@ When designing a solution, keep in mind good design practice:
   
 ## Dependencies between objects
   
-- Law of Demeter (you have it), and its close cousin Tell, Don't Ask: tell an
-  object to do something instead of pulling out its data and deciding for it.
+- Law of Demeter (Holland, 1987): a method should only talk to its immediate
+  collaborators (its own object, its parameters, and the objects it creates or
+  holds), not to the objects they return. In short: don't talk to strangers.
+- Tell, Don't Ask, a close cousin of Demeter: tell an object to do something
+  instead of pulling out its data and deciding for it.
 - Composition over inheritance (Gang of Four).
 - Program to an interface, not an implementation (Gang of Four).
 - Acyclic dependencies: no cycles between modules or packages.
